@@ -2,7 +2,7 @@ import { supabase } from "./supabase.js";
 
 const app = document.getElementById("app");
 
-// Check if user is already logged in
+// Check auth on page load
 async function checkAuth() {
   const { data: { session } } = await supabase.auth.getSession();
 
@@ -13,7 +13,7 @@ async function checkAuth() {
   }
 }
 
-// Show login/signup form
+// Show login/signup page
 function showAuth() {
   app.innerHTML = `
     <h1>ChristoBuzz</h1>
@@ -36,38 +36,55 @@ async function login() {
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
 
-  const { error } = await supabase.auth.signInWithPassword({ email, password });
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email,
+    password
+  });
 
-  if (error) {
-    document.getElementById("msg").textContent = error.message;
-  } else {
-    checkAuth();
+  document.getElementById("msg").textContent =
+    error ? error.message : "Logged in";
+
+  if (!error && data.session) {
+    showFeed(data.user);
   }
 }
 
-// Sign-up function with auto-feed
+// Sign up function (auto login after signup)
 async function signup() {
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
 
-  const { data: { user }, error } = await supabase.auth.signUp({ email, password });
+  const { data, error } = await supabase.auth.signUp({
+    email,
+    password
+  });
 
   if (error) {
     document.getElementById("msg").textContent = error.message;
-  } else {
-    document.getElementById("msg").textContent = "Account created!";
-    showFeed(user); // <-- go straight to feed after sign-up
+    return;
   }
+
+  // Auto-login after signup
+  const { error: loginError, data: loginData } = await supabase.auth.signInWithPassword({
+    email,
+    password
+  });
+
+  if (loginError) {
+    document.getElementById("msg").textContent = loginError.message;
+    return;
+  }
+
+  showFeed(loginData.user);
 }
 
-// Show feed/home page
+// Show main feed
 function showFeed(user) {
   app.innerHTML = `
     <h2>Welcome ${user.email}</h2>
 
     <textarea id="postText" placeholder="What's on your mind?"></textarea>
     <button id="postBtn">Post</button>
-
     <button id="logout">Logout</button>
 
     <div id="posts"></div>
@@ -79,7 +96,7 @@ function showFeed(user) {
   loadPosts();
 }
 
-// Logout function
+// Logout
 async function logout() {
   await supabase.auth.signOut();
   checkAuth();
@@ -90,6 +107,7 @@ async function createPost() {
   const content = document.getElementById("postText").value;
 
   const { data: { user } } = await supabase.auth.getUser();
+
   if (!user) return alert("Login required");
 
   const { error } = await supabase.from("posts").insert({
@@ -104,7 +122,7 @@ async function createPost() {
   }
 }
 
-// Load posts from Supabase
+// Load all posts
 async function loadPosts() {
   const { data } = await supabase
     .from("posts")
@@ -114,14 +132,11 @@ async function loadPosts() {
   const postsDiv = document.getElementById("posts");
   postsDiv.innerHTML = "";
 
-  if (data) {
-    data.forEach(post => {
-      const div = document.createElement("div");
-      div.textContent = post.content;
-      postsDiv.appendChild(div);
-    });
-  }
+  data.forEach(post => {
+    const div = document.createElement("div");
+    div.textContent = post.content;
+    postsDiv.appendChild(div);
+  });
 }
 
-// Initialize
 checkAuth();
