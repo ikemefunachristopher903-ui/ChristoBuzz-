@@ -1,88 +1,119 @@
-// main.js — CLEAN, SIMPLE, WORKING
+import { supabase } from "./supabase.js";
 
-document.addEventListener("DOMContentLoaded", () => {
-  const app = document.getElementById("app");
+const app = document.getElementById("app");
 
-  if (!app) {
-    document.body.innerHTML = "<h2 style='color:red'>ERROR: #app not found</h2>";
-    return;
+async function checkAuth() {
+  const { data: { session } } = await supabase.auth.getSession();
+
+  if (!session) {
+    showAuth();
+  } else {
+    showFeed(session.user);
   }
-
-  showGuestHome();
-});
-
-/* ---------------- GUEST MODE (TikTok-like) ---------------- */
-
-function showGuestHome() {
-  const app = document.getElementById("app");
-
-  app.innerHTML = `
-    <section class="feed">
-      <div class="post">
-        <h3>@christobuzz</h3>
-        <p>Welcome to ChristoBuzz 🔥</p>
-        <p>This is guest mode. You can browse but not post.</p>
-      </div>
-
-      <div class="post">
-        <h3>@demo_user</h3>
-        <p>Scroll, watch, explore.</p>
-      </div>
-
-      <div class="auth-cta">
-        <button id="loginBtn">Login</button>
-        <button id="signupBtn">Sign Up</button>
-      </div>
-    </section>
-  `;
-
-  document.getElementById("loginBtn").onclick = showAuth;
-  document.getElementById("signupBtn").onclick = showAuth;
 }
-
-/* ---------------- AUTH SCREEN ---------------- */
 
 function showAuth() {
-  const app = document.getElementById("app");
-
   app.innerHTML = `
-    <section class="auth">
-      <h2>ChristoBuzz</h2>
-      <p>Login or create an account</p>
+    <h1>ChristoBuzz</h1>
 
-      <input id="email" type="email" placeholder="Email" />
-      <input id="password" type="password" placeholder="Password" />
+    <input id="email" placeholder="Email" />
+    <input id="password" type="password" placeholder="Password" />
 
-      <button id="doLogin">Login</button>
-      <button id="doSignup">Sign Up</button>
-    </section>
+    <button id="login">Login</button>
+    <button id="signup">Sign Up</button>
+
+    <p id="msg"></p>
   `;
 
-  document.getElementById("doLogin").onclick = () => {
-    alert("Login works (Supabase comes next)");
-    showUserHome();
-  };
-
-  document.getElementById("doSignup").onclick = () => {
-    alert("Signup works (Supabase comes next)");
-    showUserHome();
-  };
+  document.getElementById("login").onclick = login;
+  document.getElementById("signup").onclick = signup;
 }
 
-/* ---------------- LOGGED-IN MODE ---------------- */
+async function login() {
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
 
-function showUserHome() {
-  const app = document.getElementById("app");
+  const { error } = await supabase.auth.signInWithPassword({
+    email,
+    password
+  });
 
+  document.getElementById("msg").textContent =
+    error ? error.message : "Logged in";
+  checkAuth();
+}
+
+async function signup() {
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+
+  const { error } = await supabase.auth.signUp({
+    email,
+    password
+  });
+
+  document.getElementById("msg").textContent =
+    error ? error.message : "Account created";
+}
+
+function showFeed(user) {
   app.innerHTML = `
-    <section class="feed">
-      <h2>Home</h2>
+    <h2>Welcome ${user.email}</h2>
 
-      <div class="post">
-        <h3>@you</h3>
-        <p>You are logged in ✅</p>
-        <p>Posting, comments, likes will work here.</p>
-      </div>
-    </section>
+    <textarea id="postText" placeholder="What's on your mind?"></textarea>
+    <button id="postBtn">Post</button>
+
+    <button id="logout">Logout</button>
+
+    <div id="posts"></div>
   `;
+
+  document.getElementById("logout").onclick = logout;
+  document.getElementById("postBtn").onclick = createPost;
+
+  loadPosts();
 }
+
+async function logout() {
+  await supabase.auth.signOut();
+  checkAuth();
+}
+
+async function createPost() {
+  const content = document.getElementById("postText").value;
+
+  const {
+    data: { user }
+  } = await supabase.auth.getUser();
+
+  if (!user) return alert("Login required");
+
+  const { error } = await supabase.from("posts").insert({
+    content,
+    user_id: user.id
+  });
+
+  if (error) alert(error.message);
+  else {
+    document.getElementById("postText").value = "";
+    loadPosts();
+  }
+}
+
+async function loadPosts() {
+  const { data } = await supabase
+    .from("posts")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  const postsDiv = document.getElementById("posts");
+  postsDiv.innerHTML = "";
+
+  data.forEach(post => {
+    const div = document.createElement("div");
+    div.textContent = post.content;
+    postsDiv.appendChild(div);
+  });
+}
+
+checkAuth();
