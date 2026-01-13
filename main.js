@@ -81,21 +81,20 @@ async function signup() {
    MAIN FEED
 ========================= */
 function showFeed(user) {
+  document.getElementById("bottomNav").classList.remove("hidden");
+
   app.innerHTML = `
-    <h2>Welcome ${user.email}</h2>
+    <div class="feed-header">ChristoBuzz</div>
 
-    <textarea id="postText" placeholder="What's on your mind?"></textarea>
-    <button id="postBtn">Post</button>
-    <button id="logoutBtn">Logout</button>
-
-    <hr />
+    <div class="post-box">
+      <textarea id="postText" placeholder="What's on your mind?"></textarea>
+      <button id="postBtn">Post</button>
+    </div>
 
     <div id="posts"></div>
   `;
 
-  document.getElementById("logoutBtn").onclick = logout;
   document.getElementById("postBtn").onclick = createPost;
-
   loadPosts("posts");
 }
 
