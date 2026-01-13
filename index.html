@@ -1,16 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ChristoBuzz</title>
-  <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="./style.css" />
 </head>
+
 <body>
-  <!-- Main app container -->
+  <!-- APP ROOT -->
   <div id="app"></div>
 
-  <!-- Main JS -->
+  <!-- BOTTOM NAV -->
+  <nav id="bottomNav" class="hidden">
+    <button data-tab="feed">🏠</button>
+    <button data-tab="reels">🎬</button>
+    <button data-tab="post">➕</button>
+    <button data-tab="notifications">🔔</button>
+    <button data-tab="profile">👤</button>
+  </nav>
+
   <script type="module" src="./main.js"></script>
 </body>
 </html>
