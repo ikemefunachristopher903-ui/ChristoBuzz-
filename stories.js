@@ -1,39 +1,45 @@
+// stories.js
 import { supabase } from "./supabase.js";
 
-// Load stories
-export async function loadStories() {
-  const { data: stories, error } = await supabase
+/* =========================
+   LOAD STORIES
+========================= */
+export async function loadStories(containerId = "stories") {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+
+  const { data: stories } = await supabase
     .from("stories")
-    .select(`id, content, user_id, created_at`)
+    .select("*")
+    .gt("expires_at", new Date().toISOString())
     .order("created_at", { ascending: false });
 
-  if (error) return alert(error.message);
+  container.innerHTML = "";
 
-  const app = document.getElementById("app");
-  app.innerHTML = `<h2>Stories</h2><div id="storiesContainer" class="stories"></div>`;
-  const storiesDiv = document.getElementById("storiesContainer");
+  stories.forEach(story => {
+    const el = document.createElement("div");
+    el.className = "story-circle";
 
-  stories.forEach((story) => {
-    const div = document.createElement("div");
-    div.className = "story-card";
-    div.innerHTML = `
-      <p>${story.content}</p>
-      <small>By ${story.user_id}</small>
+    el.innerHTML = `
+      <img src="${story.media_url}" />
     `;
-    storiesDiv.appendChild(div);
+
+    el.onclick = () => openStory(story.media_url);
+    container.appendChild(el);
   });
 }
 
-// Create a story
-export async function createStory(content) {
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return alert("Login required");
+/* =========================
+   VIEW STORY (FULLSCREEN)
+========================= */
+function openStory(url) {
+  const overlay = document.createElement("div");
+  overlay.className = "story-overlay";
 
-  const { error } = await supabase.from("stories").insert({
-    content,
-    user_id: user.id,
-  });
+  overlay.innerHTML = `
+    <img src="${url}" />
+  `;
 
-  if (error) return alert(error.message);
-  loadStories();
-      }
+  overlay.onclick = () => overlay.remove();
+  document.body.appendChild(overlay);
+}
