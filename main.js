@@ -1,8 +1,11 @@
 import { supabase } from "./supabase.js";
+import { loadPosts, createPost } from "./post.js";
 
 const app = document.getElementById("app");
 
-// Check auth on page load
+/* =========================
+   AUTH CHECK (ON LOAD)
+========================= */
 async function checkAuth() {
   const { data: { session } } = await supabase.auth.getSession();
 
@@ -13,25 +16,29 @@ async function checkAuth() {
   }
 }
 
-// Show login/signup page
+/* =========================
+   AUTH PAGE
+========================= */
 function showAuth() {
   app.innerHTML = `
     <h1>ChristoBuzz</h1>
 
-    <input id="email" placeholder="Email" />
+    <input id="email" type="email" placeholder="Email" />
     <input id="password" type="password" placeholder="Password" />
 
-    <button id="login">Login</button>
-    <button id="signup">Sign Up</button>
+    <button id="loginBtn">Login</button>
+    <button id="signupBtn">Sign Up</button>
 
     <p id="msg"></p>
   `;
 
-  document.getElementById("login").onclick = login;
-  document.getElementById("signup").onclick = signup;
+  document.getElementById("loginBtn").onclick = login;
+  document.getElementById("signupBtn").onclick = signup;
 }
 
-// Login function
+/* =========================
+   LOGIN
+========================= */
 async function login() {
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
@@ -49,12 +56,14 @@ async function login() {
   }
 }
 
-// Sign up function (auto login after signup)
+/* =========================
+   SIGN UP
+========================= */
 async function signup() {
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
 
-  const { data, error } = await supabase.auth.signUp({
+  const { error } = await supabase.auth.signUp({
     email,
     password
   });
@@ -64,79 +73,41 @@ async function signup() {
     return;
   }
 
-  // Auto-login after signup
-  const { error: loginError, data: loginData } = await supabase.auth.signInWithPassword({
-    email,
-    password
-  });
-
-  if (loginError) {
-    document.getElementById("msg").textContent = loginError.message;
-    return;
-  }
-
-  showFeed(loginData.user);
+  document.getElementById("msg").textContent =
+    "Account created. Check your email to confirm.";
 }
 
-// Show main feed
+/* =========================
+   MAIN FEED
+========================= */
 function showFeed(user) {
   app.innerHTML = `
     <h2>Welcome ${user.email}</h2>
 
     <textarea id="postText" placeholder="What's on your mind?"></textarea>
     <button id="postBtn">Post</button>
-    <button id="logout">Logout</button>
+    <button id="logoutBtn">Logout</button>
+
+    <hr />
 
     <div id="posts"></div>
   `;
 
-  document.getElementById("logout").onclick = logout;
+  document.getElementById("logoutBtn").onclick = logout;
   document.getElementById("postBtn").onclick = createPost;
 
-  loadPosts();
+  loadPosts("posts");
 }
 
-// Logout
+/* =========================
+   LOGOUT
+========================= */
 async function logout() {
   await supabase.auth.signOut();
-  checkAuth();
+  showAuth();
 }
 
-// Create a new post
-async function createPost() {
-  const content = document.getElementById("postText").value;
-
-  const { data: { user } } = await supabase.auth.getUser();
-
-  if (!user) return alert("Login required");
-
-  const { error } = await supabase.from("posts").insert({
-    content,
-    user_id: user.id
-  });
-
-  if (error) alert(error.message);
-  else {
-    document.getElementById("postText").value = "";
-    loadPosts();
-  }
-}
-
-// Load all posts
-async function loadPosts() {
-  const { data } = await supabase
-    .from("posts")
-    .select("*")
-    .order("created_at", { ascending: false });
-
-  const postsDiv = document.getElementById("posts");
-  postsDiv.innerHTML = "";
-
-  data.forEach(post => {
-    const div = document.createElement("div");
-    div.textContent = post.content;
-    postsDiv.appendChild(div);
-  });
-}
-
+/* =========================
+   START APP
+========================= */
 checkAuth();
