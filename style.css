@@ -123,3 +123,39 @@ nav button {
 .hidden {
   display: none;
 }
+
+/* POSTS UI */
+.post-card {
+  background: white;
+  margin: 12px;
+  padding: 14px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transition: transform 0.2s;
+}
+
+.post-card:hover {
+  transform: translateY(-2px);
+}
+
+.post-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.post-footer button {
+  background: #1877f2;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.post-footer span {
+  font-size: 14px;
+  color: #333;
+  }
