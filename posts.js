@@ -1,82 +1,72 @@
-
 import { supabase } from "./supabase.js";
 
-/* =========================
-   LOAD POSTS
-========================= */
-export async function loadPosts(containerId = "posts") {
-  const container = document.getElementById(containerId);
-  if (!container) return;
-
-  container.innerHTML = "<p>Loading posts...</p>";
-
-  const { data, error } = await supabase
+// Load posts
+export async function loadPosts() {
+  const { data: posts, error } = await supabase
     .from("posts")
-    .select("id, content, created_at, user_id")
+    .select(`id, content, user_id, likes, created_at`)
     .order("created_at", { ascending: false });
 
-  if (error) {
-    container.innerHTML = "<p>Error loading posts</p>";
-    return;
-  }
+  if (error) return alert(error.message);
 
-  container.innerHTML = "";
+  const postsDiv = document.getElementById("posts");
+  postsDiv.innerHTML = "";
 
-  if (data.length === 0) {
-    container.innerHTML = "<p>No posts yet</p>";
-    return;
-  }
-
-  data.forEach(post => {
-    const postEl = document.createElement("div");
-    postEl.className = "post";
-
-    postEl.innerHTML = `
-      <p>${escapeHTML(post.content)}</p>
-      <small>${new Date(post.created_at).toLocaleString()}</small>
+  posts.forEach((post) => {
+    const div = document.createElement("div");
+    div.className = "post-card";
+    div.innerHTML = `
+      <p>${post.content}</p>
+      <div class="post-footer">
+        <span>Likes: <strong id="likes-${post.id}">${post.likes}</strong></span>
+        <button id="like-${post.id}">👍 Like</button>
+      </div>
     `;
 
-    container.appendChild(postEl);
+    postsDiv.appendChild(div);
+
+    // Like button
+    document
+      .getElementById(`like-${post.id}`)
+      .addEventListener("click", () => likePost(post.id));
   });
 }
 
-/* =========================
-   CREATE POST
-========================= */
+// Create a new post
 export async function createPost() {
-  const textarea = document.getElementById("postText");
-  if (!textarea) return;
-
-  const content = textarea.value.trim();
-  if (!content) return alert("Post cannot be empty");
-
+  const content = document.getElementById("postText").value;
   const { data: { user } } = await supabase.auth.getUser();
 
-  if (!user) {
-    alert("You must be logged in to post");
-    return;
-  }
+  if (!user) return alert("Login required");
 
   const { error } = await supabase.from("posts").insert({
     content,
-    user_id: user.id
+    user_id: user.id,
   });
 
-  if (error) {
-    alert(error.message);
-    return;
-  }
+  if (error) return alert(error.message);
 
-  textarea.value = "";
-  loadPosts("posts");
+  document.getElementById("postText").value = "";
+  loadPosts();
 }
 
-/* =========================
-   BASIC XSS PROTECTION
-========================= */
-function escapeHTML(str) {
-  return str
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;");
+// Like a post
+async function likePost(postId) {
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return alert("Login required");
+
+  // Add like to likes table
+  const { error } = await supabase.from("likes").insert({
+    post_id: postId,
+    user_id: user.id,
+  });
+
+  if (error) return alert(error.message);
+
+  // Increment likes counter
+  await supabase.rpc("increment_likes", { post_id: postId });
+
+  // Update UI
+  const likesSpan = document.getElementById(`likes-${postId}`);
+  likesSpan.textContent = parseInt(likesSpan.textContent) + 1;
 }
