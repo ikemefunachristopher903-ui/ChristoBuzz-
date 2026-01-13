@@ -1,71 +1,83 @@
-// posts.js
 import { supabase } from "./supabase.js";
 
-export async function loadPosts(container) {
-  container.innerHTML = `
-    <div class="post-create" id="postCreate" style="display:none">
-      <textarea id="postContent" placeholder="What's on your mind?"></textarea>
-      <button id="postBtn">Post</button>
-    </div>
-    <div id="postsFeed"></div>
-  `;
+/**
+ * Load all posts (public – guests allowed)
+ */
+export async function loadPosts(containerId = "posts") {
+  const postsDiv = document.getElementById(containerId);
+  if (!postsDiv) return;
+
+  postsDiv.innerHTML = "Loading posts...";
+
+  const { data, error } = await supabase
+    .from("posts")
+    .select("id, content, created_at, user_id")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    postsDiv.innerHTML = "Failed to load posts";
+    console.error(error);
+    return;
+  }
+
+  postsDiv.innerHTML = "";
+
+  if (data.length === 0) {
+    postsDiv.innerHTML = "<p>No posts yet.</p>";
+    return;
+  }
+
+  data.forEach(post => {
+    const div = document.createElement("div");
+    div.className = "post";
+    div.innerHTML = `
+      <p>${escapeHTML(post.content)}</p>
+      <small>${new Date(post.created_at).toLocaleString()}</small>
+    `;
+    postsDiv.appendChild(div);
+  });
+}
+
+/**
+ * Create a new post (logged-in users only)
+ */
+export async function createPost(textareaId = "postText") {
+  const textarea = document.getElementById(textareaId);
+  if (!textarea) return;
+
+  const content = textarea.value.trim();
+  if (!content) return alert("Post cannot be empty");
 
   const { data: { user } } = await supabase.auth.getUser();
 
-  // Show post box only if logged in
-  if (user) {
-    document.getElementById("postCreate").style.display = "block";
-
-    document.getElementById("postBtn").onclick = async () => {
-      const content = document.getElementById("postContent").value.trim();
-      if (!content) return alert("Post cannot be empty");
-
-      const { error } = await supabase.from("posts").insert({
-        user_id: user.id,
-        content
-      });
-
-      if (error) {
-        alert(error.message);
-      } else {
-        document.getElementById("postContent").value = "";
-        fetchPosts();
-      }
-    };
+  if (!user) {
+    alert("Please login or sign up to post");
+    return;
   }
 
-  fetchPosts();
+  const { error } = await supabase.from("posts").insert({
+    content,
+    user_id: user.id
+  });
 
-  async function fetchPosts() {
-    const feed = document.getElementById("postsFeed");
-    feed.innerHTML = "<p style='padding:12px'>Loading...</p>";
-
-    const { data, error } = await supabase
-      .from("posts")
-      .select(`
-        id,
-        content,
-        created_at,
-        profiles(username)
-      `)
-      .order("created_at", { ascending: false });
-
-    if (error) {
-      feed.innerHTML = "<p>Error loading posts</p>";
-      return;
-    }
-
-    feed.innerHTML = "";
-
-    data.forEach(post => {
-      const div = document.createElement("div");
-      div.className = "post";
-      div.innerHTML = `
-        <strong>${post.profiles?.username || "User"}</strong>
-        <p>${post.content}</p>
-        <small>${new Date(post.created_at).toLocaleString()}</small>
-      `;
-      feed.appendChild(div);
-    });
+  if (error) {
+    alert(error.message);
+    return;
   }
+
+  textarea.value = "";
+  loadPosts();
+}
+
+/**
+ * Basic HTML escape (security)
+ */
+function escapeHTML(str) {
+  return str.replace(/[&<>"']/g, m => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#039;"
+  }[m]));
 }
