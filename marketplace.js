@@ -1,51 +1,37 @@
 // marketplace.js
-import { calculateSplit, sendSplit } from "./splitProcessor.js";
+import { supabase } from "./supabase.js";
+import { processMarketplacePurchase } from "./splitprocessor.js";
 
-// Example items in the marketplace
-export let items = [
-  { id: "item1", name: "T-Shirt", price: 10, sellerWalletBTC: "", sellerWalletUSDT: "" },
-  { id: "item2", name: "Laptop", price: 200, sellerWalletBTC: "", sellerWalletUSDT: "" }
-];
+export const items = [];
 
-/**
- * Add a new item
- * @param {string} name
- * @param {number} price
- * @param {string} sellerBTC
- * @param {string} sellerUSDT
- */
-export function addItem(name, price, sellerBTC, sellerUSDT) {
-  const newItem = {
-    id: `item${Date.now()}`,
-    name,
-    price,
-    sellerWalletBTC: sellerBTC,
-    sellerWalletUSDT: sellerUSDT
-  };
-  items.push(newItem);
-  return newItem;
+/* =========================
+   ADD ITEM TO MARKETPLACE
+========================= */
+export async function addItem(name, price, sellerBTC, sellerUSDT) {
+  const { data, error } = await supabase.from("marketplace_items").insert([
+    {
+      name,
+      price,
+      seller_btc: sellerBTC,
+      seller_usdt: sellerUSDT,
+      sold: false,
+    },
+  ]);
+
+  if (error) return alert("Failed to add item: " + error.message);
+
+  items.push(data[0]);
+  console.log(`Item added: ${name} - $${price}`);
 }
 
-/**
- * Buy an item
- * @param {string} itemId
- * @param {string} currency "BTC" or "USDT"
- */
+/* =========================
+   BUY ITEM
+========================= */
 export async function buyItem(itemId, currency = "BTC") {
-  const item = items.find(i => i.id === itemId);
-  if (!item) return console.error("Item not found");
+  const buyer = await supabase.auth.getUser();
+  if (!buyer.data.user) return alert("Login required");
 
-  // Split: 20% app, 10% AI/other, 70% seller
-  const split = calculateSplit(item.price, 0, 30); // influencerPercent 0, appPercent 30
-  console.log(`Buying item ${item.name} for ${item.price} ${currency}`);
+  await processMarketplacePurchase(itemId, buyer.data.user.id, currency);
 
-  // Override seller wallet for this transaction
-  const sellerAmount = split.ownerAmount;
-  const appAmount = split.appAmount;
-
-  await sendSplit({
-    ownerAmount: sellerAmount,
-    influencerAmount: 0,
-    appAmount
-  }, currency);
-    }
+  console.log(`Item ${itemId} purchased using ${currency}`);
+}
