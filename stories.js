@@ -2,44 +2,75 @@
 import { supabase } from "./supabase.js";
 
 /* =========================
+   CREATE STORY (IMAGE OR VIDEO)
+========================= */
+export async function createStory(mediaUrl, mediaType) {
+  if (!mediaUrl || !mediaType) return alert("Story must have media");
+
+  // Get current logged-in user
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return alert("Login required");
+
+  // Insert story into Supabase
+  const { error } = await supabase.from("stories").insert({
+    user_id: user.id,
+    media_url: mediaUrl,
+    media_type: mediaType,
+    created_at: new Date()
+  });
+
+  if (error) alert(error.message);
+}
+
+/* =========================
    LOAD STORIES
 ========================= */
-export async function loadStories(containerId = "stories") {
-  const container = document.getElementById(containerId);
-  if (!container) return;
-
-  const { data: stories } = await supabase
+export async function loadStories(containerId) {
+  // Only fetch stories created in the last 24 hours
+  const { data } = await supabase
     .from("stories")
-    .select("*")
-    .gt("expires_at", new Date().toISOString())
+    .select(`
+      *,
+      profiles:user_id(id, email, username)
+    `)
+    .gte("created_at", new Date(Date.now() - 24 * 60 * 60 * 1000)) // 24h
     .order("created_at", { ascending: false });
 
+  const container = document.getElementById(containerId);
   container.innerHTML = "";
 
-  stories.forEach(story => {
-    const el = document.createElement("div");
-    el.className = "story-circle";
+  data.forEach(story => {
+    const div = document.createElement("div");
+    div.classList.add("story");
 
-    el.innerHTML = `
-      <img src="${story.media_url}" />
+    const userEmail = story.profiles?.email || "Anonymous";
+
+    div.innerHTML = `
+      <div class="story-header"><strong>${userEmail}</strong></div>
+      ${story.media_type === "image" 
+        ? `<img src="${story.media_url}" class="story-media" />`
+        : `<video src="${story.media_url}" class="story-media" controls autoplay loop muted></video>`}
     `;
 
-    el.onclick = () => openStory(story.media_url);
-    container.appendChild(el);
+    container.appendChild(div);
   });
 }
 
 /* =========================
-   VIEW STORY (FULLSCREEN)
+   DELETE EXPIRED STORIES
 ========================= */
-function openStory(url) {
-  const overlay = document.createElement("div");
-  overlay.className = "story-overlay";
+export async function cleanupStories() {
+  const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
 
-  overlay.innerHTML = `
-    <img src="${url}" />
-  `;
+  const { error } = await supabase
+    .from("stories")
+    .delete()
+    .lt("created_at", twentyFourHoursAgo);
 
-  overlay.onclick = () => overlay.remove();
-  document.body.appendChild(overlay);
+  if (error) console.error("Failed to delete old stories:", error.message);
 }
+
+/* =========================
+   AUTO CLEANUP EVERY HOUR
+========================= */
+setInterval(cleanupStories, 60 * 60 * 1000); // run every hour
