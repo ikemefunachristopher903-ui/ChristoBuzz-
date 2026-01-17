@@ -1,161 +1,332 @@
-:root {
-  --primary: #1877f2;
-  --bg: #f0f2f5;
-  --card: #ffffff;
-  --text: #050505;
-  --muted: #65676b;
-  --radius: 14px;
-  --shadow: 0 6px 18px rgba(0,0,0,0.08);
-}
+/* =========================
+   BASE STYLES
+========================= */
 
-* {
-  box-sizing: border-box;
+:root {
+  --bg-light: #ffffff;
+  --bg-dark: #121212;
+  --text-light: #111111;
+  --text-dark: #e0e0e0;
+  --accent: #1da1f2;
+  --card-light: #f9f9f9;
+  --card-dark: #1e1e1e;
+  --border-radius: 12px;
+  --transition: 0.3s;
 }
 
 body {
+  font-family: 'Inter', 'Roboto', sans-serif;
   margin: 0;
-  background: var(--bg);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  color: var(--text);
+  padding: 0;
+  background-color: var(--bg-light);
+  color: var(--text-light);
+  transition: background-color var(--transition), color var(--transition);
 }
+
+body.dark {
+  background-color: var(--bg-dark);
+  color: var(--text-dark);
+}
+
+/* =========================
+   CONTAINERS
+========================= */
 
 #app {
-  max-width: 500px;
-  margin: auto;
-  padding-bottom: 90px;
-}
-
-/* AUTH */
-.auth {
-  padding: 40px 20px;
-}
-
-.auth h1 {
-  text-align: center;
-  color: var(--primary);
-}
-
-.auth input {
-  width: 100%;
-  padding: 14px;
-  margin: 10px 0;
-  border-radius: var(--radius);
-  border: 1px solid #ddd;
-}
-
-.auth button {
-  width: 100%;
-  padding: 14px;
-  border: none;
-  border-radius: var(--radius);
-  background: var(--primary);
-  color: white;
-  font-weight: bold;
-  margin-top: 10px;
-}
-
-/* FEED */
-.feed-header {
-  position: sticky;
-  top: 0;
-  background: var(--card);
-  padding: 14px;
-  font-weight: bold;
-  box-shadow: var(--shadow);
-}
-
-.post-box {
-  background: var(--card);
-  margin: 12px;
-  padding: 12px;
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-}
-
-.post-box textarea {
-  width: 100%;
-  border: none;
-  resize: none;
-  font-size: 15px;
-}
-
-.post-box button {
-  margin-top: 8px;
-  background: var(--primary);
-  color: white;
-  border: none;
-  padding: 8px 14px;
-  border-radius: var(--radius);
-}
-
-/* POSTS */
-.post {
-  background: var(--card);
-  margin: 12px;
-  padding: 14px;
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-}
-
-.post small {
-  color: var(--muted);
-}
-
-/* BOTTOM NAV */
-nav {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: var(--card);
-  display: flex;
-  justify-content: space-around;
-  padding: 10px 0;
-  box-shadow: 0 -4px 14px rgba(0,0,0,0.1);
-}
-
-nav button {
-  background: none;
-  border: none;
-  font-size: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 16px;
 }
 
 .hidden {
   display: none;
 }
 
-/* POSTS UI */
-.post-card {
-  background: white;
-  margin: 12px;
-  padding: 14px;
-  border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-  transition: transform 0.2s;
+/* =========================
+   BUTTONS
+========================= */
+
+button {
+  cursor: pointer;
+  padding: 10px 16px;
+  border: none;
+  border-radius: var(--border-radius);
+  background-color: var(--accent);
+  color: #fff;
+  font-weight: 600;
+  transition: background-color var(--transition);
 }
 
-.post-card:hover {
-  transform: translateY(-2px);
+button:hover {
+  background-color: #0d8ddb;
 }
 
-.post-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+input, textarea {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 12px;
+  border: 1px solid #ccc;
+  border-radius: var(--border-radius);
+  font-size: 14px;
+  transition: border var(--transition), background-color var(--transition), color var(--transition);
+}
+
+body.dark input,
+body.dark textarea {
+  background-color: #1e1e1e;
+  border: 1px solid #333;
+  color: var(--text-dark);
+}
+
+/* =========================
+   AUTH PAGES
+========================= */
+
+#app h1 {
+  text-align: center;
+  font-size: 32px;
+  margin-bottom: 24px;
+}
+
+#app p#msg {
+  text-align: center;
+  font-size: 14px;
+  color: red;
   margin-top: 8px;
 }
 
-.post-footer button {
-  background: #1877f2;
-  color: white;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 12px;
-  cursor: pointer;
+/* =========================
+   FEED & POSTS
+========================= */
+
+.feed-header {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.post-box {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 24px;
+}
+
+.post-box textarea {
+  resize: none;
+  height: 80px;
+}
+
+.post {
+  background-color: var(--card-light);
+  border-radius: var(--border-radius);
+  padding: 12px;
+  margin-bottom: 16px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  transition: background-color var(--transition);
+}
+
+body.dark .post {
+  background-color: var(--card-dark);
+}
+
+.post-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  margin-bottom: 8px;
   font-weight: 600;
 }
 
-.post-footer span {
+.post-content p {
+  margin: 8px 0;
+}
+
+.post-media {
+  width: 100%;
+  border-radius: var(--border-radius);
+  margin-top: 8px;
+}
+
+.post-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+}
+
+.post-actions button {
+  flex: 1;
+  margin: 0 4px;
+  padding: 8px 0;
   font-size: 14px;
-  color: #333;
+}
+
+/* =========================
+   COMMENTS
+========================= */
+
+.comments-container {
+  margin-top: 8px;
+  font-size: 14px;
+}
+
+.comment {
+  margin-bottom: 4px;
+}
+
+/* =========================
+   BOTTOM NAV
+========================= */
+
+#bottomNav {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--card-light);
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  max-width: 600px;
+  padding: 8px 0;
+  border-top: 1px solid #ccc;
+  border-radius: 12px 12px 0 0;
+  box-shadow: 0 -2px 6px rgba(0,0,0,0.1);
+}
+
+body.dark #bottomNav {
+  background-color: var(--card-dark);
+  border-top: 1px solid #333;
+}
+
+#bottomNav button {
+  background: none;
+  color: var(--text-light);
+  font-size: 20px;
+  padding: 8px;
+  border-radius: 50%;
+}
+
+#bottomNav button:hover {
+  background-color: var(--accent);
+  color: #fff;
+}
+
+/* =========================
+   MARKETPLACE
+========================= */
+
+.marketplace-item {
+  background-color: var(--card-light);
+  padding: 12px;
+  border-radius: var(--border-radius);
+  margin-bottom: 12px;
+  display: flex;
+  flex-direction: column;
+}
+
+.marketplace-item img {
+  width: 100%;
+  border-radius: var(--border-radius);
+  margin-bottom: 8px;
+}
+
+body.dark .marketplace-item {
+  background-color: var(--card-dark);
+}
+
+/* =========================
+   PROFILE PAGE
+========================= */
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.profile-header img {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  margin-right: 12px;
+}
+
+.profile-stats {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 16px;
+}
+
+.profile-stats div {
+  text-align: center;
+}
+
+/* =========================
+   STORIES
+========================= */
+
+.stories-container {
+  display: flex;
+  overflow-x: auto;
+  margin-bottom: 16px;
+}
+
+.story {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  margin-right: 12px;
+  border: 2px solid var(--accent);
+  flex-shrink: 0;
+}
+
+body.dark .story {
+  border-color: var(--accent);
+}
+
+/* =========================
+   REELS
+========================= */
+
+.reel-video {
+  width: 100%;
+  height: 400px;
+  border-radius: var(--border-radius);
+  margin-bottom: 16px;
+}
+
+/* =========================
+   DARK THEME TOGGLE
+========================= */
+
+.theme-toggle {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  background-color: var(--accent);
+  color: #fff;
+  border-radius: var(--border-radius);
+  padding: 8px 12px;
+  font-weight: 600;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+/* =========================
+   GENERAL RESPONSIVE
+========================= */
+
+@media (max-width: 600px) {
+  #app {
+    padding: 8px;
   }
+
+  .post-actions button {
+    font-size: 12px;
+  }
+
+  .bottomNav button {
+    font-size: 18px;
+  }
+}
