@@ -3,23 +3,73 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ChristoBuzz</title>
-  <link rel="stylesheet" href="./style.css" />
+  <title>Hybrid Social App</title>
+
+  <!-- THEME -->
+  <meta name="theme-color" content="#ffffff" id="theme-color" />
+
+  <!-- STYLES -->
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- SUPABASE -->
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 </head>
 
-<body>
-  <!-- APP ROOT -->
-  <div id="app"></div>
+<body data-theme="light">
 
-  <!-- BOTTOM NAV -->
-  <nav id="bottomNav" class="hidden">
-    <button data-tab="feed">🏠</button>
-    <button data-tab="reels">🎬</button>
-    <button data-tab="post">➕</button>
-    <button data-tab="notifications">🔔</button>
-    <button data-tab="profile">👤</button>
-  </nav>
+  <!-- ================= AUTH SCREENS ================= -->
+  <div id="auth-screen" class="screen hidden">
+    <div class="auth-box">
+      <h1>Welcome</h1>
 
-  <script type="module" src="./main.js"></script>
+      <input id="auth-email" type="email" placeholder="Email" />
+      <input id="auth-password" type="password" placeholder="Password" />
+
+      <button id="login-btn">Login</button>
+      <button id="signup-btn">Sign Up</button>
+    </div>
+  </div>
+
+  <!-- ================= MAIN APP ================= -->
+  <div id="app" class="hidden">
+
+    <!-- TOP BAR -->
+    <header id="top-bar">
+      <span id="app-title">Hybrid</span>
+      <button id="theme-toggle">🌙</button>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main id="view-container">
+      <!-- JS injects views here -->
+    </main>
+
+    <!-- BOTTOM NAVIGATION -->
+    <nav id="bottom-nav">
+      <button data-view="feed">🏠</button>
+      <button data-view="reels">🎬</button>
+      <button data-view="create">➕</button>
+      <button data-view="notifications">🔔</button>
+      <button data-view="profile">👤</button>
+    </nav>
+  </div>
+
+  <!-- ================= MODALS ================= -->
+
+  <!-- CREATE POST MODAL -->
+  <div id="create-modal" class="modal hidden">
+    <div class="modal-content">
+      <textarea id="post-content" placeholder="What's on your mind?"></textarea>
+      <button id="post-submit">Post</button>
+      <button class="modal-close">Close</button>
+    </div>
+  </div>
+
+  <!-- LOADER -->
+  <div id="loader" class="hidden">Loading...</div>
+
+  <!-- MAIN JS (ONLY ENTRY POINT) -->
+  <script type="module" src="main.js"></script>
+
 </body>
 </html>
