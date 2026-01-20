@@ -1,67 +1,92 @@
+// main.js
 import { supabase } from "./supabase.js";
-import { loadPosts, createPost } from "./post.js";
 
-const app = document.getElementById("app");
+// feature modules
+import { initPosts } from "./posts.js";
+import { initPostInteractions } from "./postinteractions.js";
+import { initFollowSystem } from "./follow.js";
+import { initProfile } from "./profile.js";
+import { initMessages } from "./messages.js";
+import { initNotifications } from "./notifications.js";
+import { initStories } from "./stories.js";
+import { initReels } from "./reels.js";
+import { initWallet } from "./wallet.js";
+import { initMarketplace } from "./marketplace.js";
+import { initMusic } from "./music.js";
+import { initInfluencer } from "./influencer.js";
+import { initAdNetwork } from "./adnetwork.js";
+import { initAI } from "./ai.js";
 
-/* =========================
-   AUTH CHECK (ON LOAD)
-========================= */
-async function checkAuth() {
-  const { data: { session } } = await supabase.auth.getSession();
+// ----------------------------
+// AUTH STATE HANDLING
+// ----------------------------
+async function handleAuth() {
+  const {
+    data: { session }
+  } = await supabase.auth.getSession();
 
   if (!session) {
-    showAuth();
+    showAuthScreen();
   } else {
-    showFeed(session.user);
+    startApp(session.user);
   }
 }
 
-/* =========================
-   AUTH PAGE
-========================= */
-function showAuth() {
-  app.innerHTML = `
-    <h1>ChristoBuzz</h1>
+// ----------------------------
+// APP START
+// ----------------------------
+function startApp(user) {
+  document.body.classList.add("authenticated");
 
-    <input id="email" type="email" placeholder="Email" />
-    <input id="password" type="password" placeholder="Password" />
+  initPosts(user);
+  initPostInteractions(user);
+  initFollowSystem(user);
+  initProfile(user);
+  initMessages(user);
+  initNotifications(user);
+  initStories(user);
+  initReels(user);
+  initWallet(user);
+  initMarketplace(user);
+  initMusic(user);
+  initInfluencer(user);
+  initAdNetwork(user);
+  initAI(user);
 
-    <button id="loginBtn">Login</button>
-    <button id="signupBtn">Sign Up</button>
-
-    <p id="msg"></p>
-  `;
-
-  document.getElementById("loginBtn").onclick = login;
-  document.getElementById("signupBtn").onclick = signup;
+  console.log("✅ App started for:", user.id);
 }
 
-/* =========================
-   LOGIN
-========================= */
-async function login() {
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
+// ----------------------------
+// AUTH UI
+// ----------------------------
+function showAuthScreen() {
+  document.body.classList.remove("authenticated");
+  document.body.classList.add("unauthenticated");
+}
 
-  const { data, error } = await supabase.auth.signInWithPassword({
+// ----------------------------
+// LOGIN
+// ----------------------------
+window.login = async function () {
+  const email = document.getElementById("login-email").value;
+  const password = document.getElementById("login-password").value;
+
+  const { error } = await supabase.auth.signInWithPassword({
     email,
     password
   });
 
-  document.getElementById("msg").textContent =
-    error ? error.message : "Logged in";
-
-  if (!error && data.session) {
-    showFeed(data.user);
+  if (error) {
+    alert(error.message);
   }
-}
+};
 
-/* =========================
-   SIGN UP
-========================= */
-async function signup() {
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
+// ----------------------------
+// SIGNUP
+// ----------------------------
+window.signup = async function () {
+  const email = document.getElementById("signup-email").value;
+  const password = document.getElementById("signup-password").value;
 
   const { error } = await supabase.auth.signUp({
     email,
@@ -69,44 +94,30 @@ async function signup() {
   });
 
   if (error) {
-    document.getElementById("msg").textContent = error.message;
-    return;
+    alert(error.message);
   }
+};
 
-  document.getElementById("msg").textContent =
-    "Account created. Check your email to confirm.";
-}
-
-/* =========================
-   MAIN FEED
-========================= */
-function showFeed(user) {
-  document.getElementById("bottomNav").classList.remove("hidden");
-
-  app.innerHTML = `
-    <div class="feed-header">ChristoBuzz</div>
-
-    <div class="post-box">
-      <textarea id="postText" placeholder="What's on your mind?"></textarea>
-      <button id="postBtn">Post</button>
-    </div>
-
-    <div id="posts"></div>
-  `;
-
-  document.getElementById("postBtn").onclick = createPost;
-  loadPosts("posts");
-}
-
-/* =========================
-   LOGOUT
-========================= */
-async function logout() {
+// ----------------------------
+// LOGOUT
+// ----------------------------
+window.logout = async function () {
   await supabase.auth.signOut();
-  showAuth();
-}
+  location.reload();
+};
 
-/* =========================
-   START APP
-========================= */
-checkAuth();
+// ----------------------------
+// AUTH LISTENER
+// ----------------------------
+supabase.auth.onAuthStateChange((_event, session) => {
+  if (session) {
+    startApp(session.user);
+  } else {
+    showAuthScreen();
+  }
+});
+
+// ----------------------------
+// INIT
+// ----------------------------
+document.addEventListener("DOMContentLoaded", handleAuth);
