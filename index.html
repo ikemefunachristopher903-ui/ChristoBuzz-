@@ -3,73 +3,98 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Hybrid Social App</title>
+  <title>Social App</title>
 
-  <!-- THEME -->
-  <meta name="theme-color" content="#ffffff" id="theme-color" />
-
-  <!-- STYLES -->
+  <!-- CSS -->
   <link rel="stylesheet" href="style.css" />
 
-  <!-- SUPABASE -->
-  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
 </head>
+<body>
 
-<body data-theme="light">
+<!-- ================= AUTH SCREEN ================= -->
+<div id="auth-screen" class="auth-screen unauthenticated">
 
-  <!-- ================= AUTH SCREENS ================= -->
-  <div id="auth-screen" class="screen hidden">
-    <div class="auth-box">
-      <h1>Welcome</h1>
+  <div class="auth-box">
+    <h1>Welcome 👋</h1>
+    <p>Connect with friends, creators & businesses</p>
 
-      <input id="auth-email" type="email" placeholder="Email" />
-      <input id="auth-password" type="password" placeholder="Password" />
+    <!-- LOGIN -->
+    <input type="email" id="login-email" placeholder="Email" />
+    <input type="password" id="login-password" placeholder="Password" />
+    <button onclick="login()">Login</button>
 
-      <button id="login-btn">Login</button>
-      <button id="signup-btn">Sign Up</button>
+    <hr />
+
+    <!-- SIGN UP -->
+    <input type="email" id="signup-email" placeholder="New Email" />
+    <input type="password" id="signup-password" placeholder="New Password" />
+    <button class="secondary" onclick="signup()">Create Account</button>
+  </div>
+
+</div>
+
+<!-- ================= APP ================= -->
+<div id="app" class="authenticated hidden">
+
+  <!-- ===== TOP NAV ===== -->
+  <header class="top-nav">
+    <h2 class="logo">Social</h2>
+
+    <div class="nav-icons">
+      <i class="fa-solid fa-house"></i>
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <i class="fa-solid fa-plus" id="openPost"></i>
+      <i class="fa-solid fa-heart"></i>
+      <i class="fa-solid fa-user"></i>
     </div>
-  </div>
+  </header>
 
-  <!-- ================= MAIN APP ================= -->
-  <div id="app" class="hidden">
+  <!-- ===== MAIN FEED ===== -->
+  <main class="feed">
 
-    <!-- TOP BAR -->
-    <header id="top-bar">
-      <span id="app-title">Hybrid</span>
-      <button id="theme-toggle">🌙</button>
-    </header>
+    <!-- CREATE POST -->
+    <section class="create-post">
+      <textarea id="postText" placeholder="What's on your mind?"></textarea>
 
-    <!-- MAIN CONTENT -->
-    <main id="view-container">
-      <!-- JS injects views here -->
-    </main>
+      <div class="post-actions">
+        <label>
+          <i class="fa-solid fa-image"></i>
+          <input type="file" id="postImage" hidden />
+        </label>
 
-    <!-- BOTTOM NAVIGATION -->
-    <nav id="bottom-nav">
-      <button data-view="feed">🏠</button>
-      <button data-view="reels">🎬</button>
-      <button data-view="create">➕</button>
-      <button data-view="notifications">🔔</button>
-      <button data-view="profile">👤</button>
-    </nav>
-  </div>
+        <label>
+          <i class="fa-solid fa-video"></i>
+          <input type="file" id="postVideo" hidden />
+        </label>
 
-  <!-- ================= MODALS ================= -->
+        <button id="postBtn">Post</button>
+      </div>
+    </section>
 
-  <!-- CREATE POST MODAL -->
-  <div id="create-modal" class="modal hidden">
-    <div class="modal-content">
-      <textarea id="post-content" placeholder="What's on your mind?"></textarea>
-      <button id="post-submit">Post</button>
-      <button class="modal-close">Close</button>
-    </div>
-  </div>
+    <!-- POSTS -->
+    <section id="posts" class="posts"></section>
 
-  <!-- LOADER -->
-  <div id="loader" class="hidden">Loading...</div>
+  </main>
 
-  <!-- MAIN JS (ONLY ENTRY POINT) -->
-  <script type="module" src="main.js"></script>
+  <!-- ===== BOTTOM NAV (MOBILE) ===== -->
+  <nav class="bottom-nav">
+    <i class="fa-solid fa-house"></i>
+    <i class="fa-solid fa-users"></i>
+    <i class="fa-solid fa-video"></i>
+    <i class="fa-solid fa-comment"></i>
+    <i class="fa-solid fa-wallet"></i>
+  </nav>
+
+</div>
+
+<!-- LOGOUT -->
+<button id="logoutBtn" class="logout-btn" onclick="logout()">Logout</button>
+
+<!-- ================= JS ================= -->
+<script type="module" src="./main.js"></script>
 
 </body>
 </html>
