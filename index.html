@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ChristoBuzz</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+<!-- ================= AUTH SCREEN ================= -->
+<div id="auth-screen" class="auth-screen">
+  <div class="auth-box">
+    <h1>Welcome 👋</h1>
+    <p>Connect with friends, creators & businesses</p>
+
+    <!-- LOGIN -->
+    <input type="email" id="login-email" placeholder="Email" />
+    <input type="password" id="login-password" placeholder="Password" />
+    <button onclick="login()">Login</button>
+
+    <hr />
+
+    <!-- SIGN UP -->
+    <input type="email" id="signup-email" placeholder="New Email" />
+    <input type="password" id="signup-password" placeholder="New Password" />
+    <button class="secondary" onclick="signup()">Create Account</button>
+  </div>
+</div>
+
+<!-- ================= APP ================= -->
+<div id="app" class="app hidden">
+
+  <!-- ===== TOP NAV ===== -->
+  <header class="top-nav">
+    <h2 class="logo">ChristoBuzz</h2>
+    <div class="nav-icons">
+      <i class="fa-solid fa-house" id="nav-feed" title="Feed"></i>
+      <i class="fa-solid fa-users" id="nav-follow" title="Friends"></i>
+      <i class="fa-solid fa-plus" id="nav-post" title="Create Post"></i>
+      <i class="fa-solid fa-heart" id="nav-notifications" title="Notifications"></i>
+      <i class="fa-solid fa-user" id="nav-profile" title="Profile"></i>
+    </div>
+    <button id="themeToggle">🌙</button>
+  </header>
+
+  <!-- ===== MAIN FEED ===== -->
+  <main id="main-content" class="feed">
+
+    <!-- CREATE POST -->
+    <section class="create-post" id="create-post-section">
+      <textarea id="postText" placeholder="What's on your mind?"></textarea>
+      <div class="post-actions">
+        <label>
+          <i class="fa-solid fa-image"></i>
+          <input type="file" id="postImage" hidden />
+        </label>
+        <label>
+          <i class="fa-solid fa-video"></i>
+          <input type="file" id="postVideo" hidden />
+        </label>
+        <button id="postBtn">Post</button>
+      </div>
+    </section>
+
+    <!-- POSTS -->
+    <section id="posts" class="posts"></section>
+  </main>
+
+  <!-- ===== BOTTOM NAV ===== -->
+  <nav class="bottom-nav">
+    <i class="fa-solid fa-house" id="bottom-feed"></i>
+    <i class="fa-solid fa-users" id="bottom-follow"></i>
+    <i class="fa-solid fa-video" id="bottom-reels"></i>
+    <i class="fa-solid fa-comment" id="bottom-messages"></i>
+    <i class="fa-solid fa-wallet" id="bottom-wallet"></i>
+  </nav>
+
+  <!-- LOGOUT -->
+  <button id="logoutBtn" class="logout-btn">Logout</button>
+
+</div>
+
+<!-- ================= JS ================= -->
+<script type="module" src="./main.js"></script>
+
+</body>
+</html>
