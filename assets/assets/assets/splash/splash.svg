@@ -1,0 +1,29 @@
+<svg width="1080" height="1920" viewBox="0 0 1080 1920"
+     xmlns="http://www.w3.org/2000/svg">
+
+  <rect width="1080" height="1920" fill="#0f172a"/>
+
+  <!-- Left Bee -->
+  <g transform="translate(380,900)">
+    <circle r="70" fill="#ffcc00"/>
+    <ellipse cx="-45" cy="-45" rx="22" ry="32" fill="#e5e7eb"/>
+    <ellipse cx="45" cy="-45" rx="22" ry="32" fill="#e5e7eb"/>
+  </g>
+
+  <!-- Right Bee -->
+  <g transform="translate(700,900)">
+    <circle r="70" fill="#ffcc00"/>
+    <ellipse cx="-45" cy="-45" rx="22" ry="32" fill="#e5e7eb"/>
+    <ellipse cx="45" cy="-45" rx="22" ry="32" fill="#e5e7eb"/>
+  </g>
+
+  <!-- Buzz text -->
+  <text x="540" y="1150"
+        text-anchor="middle"
+        fill="#facc15"
+        font-size="72"
+        font-family="Arial, sans-serif">
+    Buzz… Buzz…
+  </text>
+
+</svg>
