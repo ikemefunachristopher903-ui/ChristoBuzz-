@@ -2,6 +2,7 @@
 import { supabase } from "./supabase.js";
 import { generateCaption, suggestHashtags, moderateContent } from "./ai.js";
 import { registerView } from "./ad_networks.js"; // AD NETWORKS
+import { applyFilter } from "./filters.js";
 
 /* =========================
    CREATE POST (TEXT, IMAGE, VIDEO)
