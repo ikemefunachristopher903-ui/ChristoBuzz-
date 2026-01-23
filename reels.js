@@ -1,6 +1,7 @@
 // reels.js
 import { supabase } from "./supabase.js";
 import { registerView } from "./ad_networks.js"; // AD NETWORKS
+import { applyFilter } from "./filters.js";
 
 export async function loadReels(containerId) {
   const { data } = await supabase
