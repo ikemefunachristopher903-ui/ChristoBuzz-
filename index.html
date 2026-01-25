@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>ChristoBuzz</title>
+
+  <!-- PWA -->
+  <link rel="manifest" href="/manifest.json" />
+  <meta name="theme-color" content="#111111" />
+  <link rel="apple-touch-icon" href="/icons/icon-192.png" />
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="/style.css" />
+
+  <!-- SEO / Social -->
+  <meta name="description" content="Create posts, reels, filters and earn rewards" />
+</head>
+
+<body>
+
+  <!-- =====================
+       APP ROOT
+  ====================== -->
+  <div id="app">
+
+    <!-- Header -->
+    <header id="top-bar">
+      <h1>ChristoBuzz</h1>
+      <button id="wallet-btn">Wallet</button>
+    </header>
+
+    <!-- Filters -->
+    <section id="filters-section">
+      <h3>Filters</h3>
+      <div id="filters-container"></div>
+    </section>
+
+    <!-- Main Feed -->
+    <main id="feed">
+
+      <!-- Posts -->
+      <section id="posts-section">
+        <h3>Posts</h3>
+        <div id="posts-container"></div>
+      </section>
+
+      <!-- Reels -->
+      <section id="reels-section">
+        <h3>Reels</h3>
+        <div id="reels-container"></div>
+      </section>
+
+    </main>
+
+    <!-- Ads -->
+    <section id="ads-section">
+      <div id="ad-slot"></div>
+    </section>
+
+  </div>
+
+  <!-- =====================
+       SCRIPTS
+  ====================== -->
+
+  <!-- Main Entry -->
+  <script type="module" src="/main.js"></script>
+
+</body>
+  </html>
