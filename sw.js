@@ -1,43 +1,74 @@
-const CACHE_NAME = "christobuzz-v2";
-
+const CACHE_NAME = "christobuzz-v1";
 const ASSETS = [
   "/",
   "/index.html",
   "/style.css",
   "/main.js",
   "/post.js",
-  "/ai.js",
+  "/reels.js",
+  "/filters.js",
+  "/follow.js",
+  "/messages.js",
+  "/notifications.js",
+  "/profile.js",
+  "/marketplace.js",
+  "/music.js",
   "/wallet.js",
-  "/splitprocessor.js"
+  "/demo.js",
+  "/policy.js",
+  "/supabase.js",
+  "/pwa.js",
+  "/adnetwork.js",
+  "/postinteractions.js",
+  "/stories.js",
+  "/icons/icon-192.svg",
+  "/icons/icon-512.svg"
 ];
 
-// INSTALL
+// Install event
 self.addEventListener("install", event => {
-  self.skipWaiting(); // ✅ activate immediately
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS))
+    caches.open(CACHE_NAME).then(cache => {
+      console.log("Caching assets...");
+      return cache.addAll(ASSETS);
+    })
   );
+  self.skipWaiting();
 });
 
-// ACTIVATE
+// Activate event
 self.addEventListener("activate", event => {
   event.waitUntil(
-    caches.keys().then(keys =>
+    caches.keys().then(keys => 
       Promise.all(
-        keys
-          .filter(key => key !== CACHE_NAME)
-          .map(key => caches.delete(key))
+        keys.filter(key => key !== CACHE_NAME)
+            .map(key => caches.delete(key))
       )
     )
   );
-  self.clients.claim(); // ✅ take control immediately
+  self.clients.claim();
 });
 
-// FETCH
+// Fetch event - serve cached first
 self.addEventListener("fetch", event => {
   event.respondWith(
-    caches.match(event.request).then(response => {
-      return response || fetch(event.request);
+    caches.match(event.request).then(cachedResponse => {
+      if (cachedResponse) return cachedResponse;
+
+      return fetch(event.request)
+        .then(networkResponse => {
+          // Cache new requests dynamically
+          return caches.open(CACHE_NAME).then(cache => {
+            cache.put(event.request, networkResponse.clone());
+            return networkResponse;
+          });
+        })
+        .catch(() => {
+          // Fallback: could show offline page if needed
+          if (event.request.destination === "document") {
+            return caches.match("/index.html");
+          }
+        });
     })
   );
 });
