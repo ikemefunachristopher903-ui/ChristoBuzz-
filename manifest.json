@@ -1,22 +1,24 @@
 {
+  "id": "christobuzz",
   "name": "ChristoBuzz",
   "short_name": "ChristoBuzz",
   "description": "A social platform for creators, friends, and businesses.",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#0d6efd",
-  "orientation": "portrait-primary",
+  "theme_color": "#ffffff",
+  "orientation": "portrait",
   "icons": [
     {
-      "src": "/icons/icon-192.svg",
+      "src": "/icons/icon-192.png",
       "sizes": "192x192",
-      "type": "image/svg+xml"
+      "type": "image/png"
     },
     {
-      "src": "/icons/icon-512.svg",
+      "src": "/icons/icon-512.png",
       "sizes": "512x512",
-      "type": "image/svg+xml"
+      "type": "image/png"
     }
   ]
 }
