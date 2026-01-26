@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ChristoBuzz</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- PWA -->
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#ffffff">
+</head>
+<body>
+
+<!-- =========================
+     AUTH SCREEN
+========================= -->
+<div id="auth-screen" class="auth-screen unauthenticated">
+  <div class="auth-box">
+    <h1>Welcome to ChristoBuzz 👋</h1>
+    <p>Connect with friends, creators & businesses</p>
+
+    <!-- LOGIN -->
+    <input type="email" id="login-email" placeholder="Email" />
+    <input type="password" id="login-password" placeholder="Password" />
+    <button onclick="login()">Login</button>
+    <button onclick="window.location.href='#signup'">Sign Up</button>
+
+    <hr />
+
+    <!-- SIGN UP -->
+    <div id="signup">
+      <input type="text" id="signup-username" placeholder="Username" />
+      <input type="email" id="signup-email" placeholder="Email" />
+      <input type="password" id="signup-password" placeholder="Password" />
+      <input type="password" id="signup-confirm-password" placeholder="Confirm Password" />
+      <label>
+        <input type="checkbox" id="policyCheckbox" />
+        I agree to the <a href="javascript:void(0)" id="openPolicy">App Policy</a>
+      </label>
+      <button class="secondary" onclick="signup()">Create Account</button>
+    </div>
+  </div>
+</div>
+
+<!-- =========================
+     APP
+========================= -->
+<div id="app" class="authenticated hidden">
+
+  <!-- ===== TOP NAV ===== -->
+  <header class="top-nav">
+    <h2 class="logo">ChristoBuzz</h2>
+    <div class="nav-icons">
+      <i class="fa-solid fa-house nav-home"></i>
+      <i class="fa-solid fa-video nav-reels"></i>
+      <i class="fa-solid fa-music nav-music"></i>
+      <i class="fa-solid fa-cart-shopping nav-marketplace"></i>
+      <i class="fa-solid fa-plus nav-create"></i>
+      <i class="fa-solid fa-bell nav-notifications"></i>
+      <i class="fa-solid fa-user nav-profile"></i>
+    </div>
+  </header>
+
+  <!-- ===== SECTIONS ===== -->
+  <main>
+    <section id="section-home" class="app-section">
+      <div id="friendSuggestions"></div>
+      <div id="posts" class="posts"></div>
+    </section>
+
+    <section id="section-reels" class="app-section hidden">
+      <div id="reelsFeed"></div>
+    </section>
+
+    <section id="section-music" class="app-section hidden">
+      <div id="musicFeed"></div>
+    </section>
+
+    <section id="section-marketplace" class="app-section hidden">
+      <div id="marketplaceFeed"></div>
+    </section>
+
+    <section id="section-create" class="app-section hidden">
+      <textarea id="postText" placeholder="What's on your mind?"></textarea>
+
+      <div class="post-actions">
+        <label>
+          <i class="fa-solid fa-image"></i>
+          <input type="file" id="postImage" hidden />
+        </label>
+
+        <label>
+          <i class="fa-solid fa-video"></i>
+          <input type="file" id="postVideo" hidden />
+        </label>
+
+        <label>
+          <i class="fa-solid fa-music"></i>
+          <input type="file" id="postMusic" hidden />
+        </label>
+
+        <button id="postBtn">Post</button>
+      </div>
+
+      <div id="filterBar" class="filter-bar"></div>
+    </section>
+
+    <section id="section-notifications" class="app-section hidden">
+      <div id="notificationsFeed"></div>
+    </section>
+
+    <section id="section-profile" class="app-section hidden">
+      <div id="profileHeader"></div>
+      <div id="userPosts"></div>
+      <div id="walletSection"></div>
+    </section>
+  </main>
+
+  <!-- ===== BOTTOM NAV ===== -->
+  <nav class="bottom-nav">
+    <i class="fa-solid fa-house nav-home"></i>
+    <i class="fa-solid fa-video nav-reels"></i>
+    <i class="fa-solid fa-music nav-music"></i>
+    <i class="fa-solid fa-cart-shopping nav-marketplace"></i>
+    <i class="fa-solid fa-plus nav-create"></i>
+    <i class="fa-solid fa-bell nav-notifications"></i>
+    <i class="fa-solid fa-user nav-profile"></i>
+  </nav>
+</div>
+
+<button id="logoutBtn" class="logout-btn" onclick="logout()">Logout</button>
+
+<!-- MAIN JS -->
+<script type="module" src="./main.js"></script>
+
+<!-- SERVICE WORKER REGISTRATION -->
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker
+        .register('/sw.js')
+        .then(reg => console.log('Service Worker registered:', reg))
+        .catch(err => console.error('Service Worker registration failed:', err));
+    });
+  }
+</script>
+
+</body>
+</html>
