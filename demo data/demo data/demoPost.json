@@ -1,0 +1,56 @@
+[
+  {
+    "id": "p1",
+    "userId": "u1",
+    "content": "🔥 Big match tonight! Who’s winning?",
+    "type": "text"
+  },
+  {
+    "id": "p2",
+    "userId": "u4",
+    "content": "😂 When your data finishes at 12am",
+    "type": "video"
+  },
+  {
+    "id": "p3",
+    "userId": "u7",
+    "content": "🎶 New Afrobeat playlist just dropped!",
+    "type": "music"
+  },
+  {
+    "id": "p4",
+    "userId": "u6",
+    "content": "🎨 Digital art is the future",
+    "type": "image"
+  },
+  {
+    "id": "p5",
+    "userId": "u5",
+    "content": "📰 Breaking news: Tech startups rising fast",
+    "type": "text"
+  },
+  {
+    "id": "p6",
+    "userId": "u9",
+    "content": "🎮 Top 5 mobile games this year",
+    "type": "text"
+  },
+  {
+    "id": "p7",
+    "userId": "u8",
+    "content": "🐶 Dogs understand more than we think",
+    "type": "image"
+  },
+  {
+    "id": "p8",
+    "userId": "u10",
+    "content": "🚀 AI and space exploration are merging",
+    "type": "text"
+  },
+  {
+    "id": "p9",
+    "userId": "u11",
+    "content": "📚 Study tips that actually work",
+    "type": "text"
+  }
+]
