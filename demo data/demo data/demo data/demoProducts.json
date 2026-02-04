@@ -1,0 +1,58 @@
+{
+  "products": [
+    {
+      "id": "p001",
+      "title": "Wireless Bluetooth Earbuds",
+      "description": "High-quality wireless earbuds with noise cancellation.",
+      "category": "electronics",
+      "prices": {
+        "NG": { "amount": 18000, "currency": "NGN", "symbol": "₦" },
+        "US": { "amount": 25, "currency": "USD", "symbol": "$" },
+        "UK": { "amount": 20, "currency": "GBP", "symbol": "£" },
+        "EU": { "amount": 23, "currency": "EUR", "symbol": "€" }
+      },
+      "rating": 4.5,
+      "stock": 120,
+      "images": [
+        "/images/products/earbuds-1.png"
+      ],
+      "isDemo": true
+    },
+    {
+      "id": "p002",
+      "title": "Smart Fitness Watch",
+      "description": "Track your health, steps, and workouts easily.",
+      "category": "wearables",
+      "prices": {
+        "NG": { "amount": 45000, "currency": "NGN", "symbol": "₦" },
+        "US": { "amount": 60, "currency": "USD", "symbol": "$" },
+        "UK": { "amount": 55, "currency": "GBP", "symbol": "£" },
+        "EU": { "amount": 58, "currency": "EUR", "symbol": "€" }
+      },
+      "rating": 4.2,
+      "stock": 80,
+      "images": [
+        "/images/products/watch-1.png"
+      ],
+      "isDemo": true
+    },
+    {
+      "id": "p003",
+      "title": "Casual Sneakers",
+      "description": "Comfortable sneakers for everyday use.",
+      "category": "fashion",
+      "prices": {
+        "NG": { "amount": 30000, "currency": "NGN", "symbol": "₦" },
+        "US": { "amount": 40, "currency": "USD", "symbol": "$" },
+        "UK": { "amount": 35, "currency": "GBP", "symbol": "£" },
+        "EU": { "amount": 38, "currency": "EUR", "symbol": "€" }
+      },
+      "rating": 4.0,
+      "stock": 200,
+      "images": [
+        "/images/products/sneakers-1.png"
+      ],
+      "isDemo": true
+    }
+  ]
+}
