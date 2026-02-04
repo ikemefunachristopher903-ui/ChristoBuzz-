@@ -1,0 +1,68 @@
+[
+  {
+    "id": "u1",
+    "username": "SportyHub",
+    "category": "Sports",
+    "avatar": "https://i.pravatar.cc/150?img=1"
+  },
+  {
+    "id": "u2",
+    "username": "HealthPlus",
+    "category": "Medical & Health",
+    "avatar": "https://i.pravatar.cc/150?img=2"
+  },
+  {
+    "id": "u3",
+    "username": "BuzzMarket",
+    "category": "Marketplace",
+    "avatar": "https://i.pravatar.cc/150?img=3"
+  },
+  {
+    "id": "u4",
+    "username": "FunnyVerse",
+    "category": "Comedy",
+    "avatar": "https://i.pravatar.cc/150?img=4"
+  },
+  {
+    "id": "u5",
+    "username": "DailyNews",
+    "category": "News",
+    "avatar": "https://i.pravatar.cc/150?img=5"
+  },
+  {
+    "id": "u6",
+    "username": "ArtLoop",
+    "category": "Art",
+    "avatar": "https://i.pravatar.cc/150?img=6"
+  },
+  {
+    "id": "u7",
+    "username": "MusicFlow",
+    "category": "Music",
+    "avatar": "https://i.pravatar.cc/150?img=7"
+  },
+  {
+    "id": "u8",
+    "username": "WildLife",
+    "category": "Animals",
+    "avatar": "https://i.pravatar.cc/150?img=8"
+  },
+  {
+    "id": "u9",
+    "username": "GameZone",
+    "category": "Gaming",
+    "avatar": "https://i.pravatar.cc/150?img=9"
+  },
+  {
+    "id": "u10",
+    "username": "SciFuture",
+    "category": "Sci-Fi",
+    "avatar": "https://i.pravatar.cc/150?img=10"
+  },
+  {
+    "id": "u11",
+    "username": "LearnSmart",
+    "category": "Education",
+    "avatar": "https://i.pravatar.cc/150?img=11"
+  }
+]
