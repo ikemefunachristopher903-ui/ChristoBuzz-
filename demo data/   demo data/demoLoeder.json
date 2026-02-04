@@ -1,0 +1,13 @@
+export async function loadDemoData() {
+  const [users, posts, products] = await Promise.all([
+    fetch("/demoData/demoUsers.json").then(r => r.json()),
+    fetch("/demoData/demoPosts.json").then(r => r.json()),
+    fetch("/demoData/demoProducts.json").then(r => r.json())
+  ]);
+
+  return {
+    users: users.users,
+    posts: posts.posts,
+    products: products.products
+  };
+}
