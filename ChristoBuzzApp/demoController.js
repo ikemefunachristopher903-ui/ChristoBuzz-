@@ -1,26 +1,47 @@
-import { DEMO_MODE } from "./config.js";
-import { loadDemoData } from "./demoData/demoLoader.js";
+// demoController.js
+// This handles loading demo data for users, posts, products, and connecting features
 
-export let DEMO_DATA = {
-  users: [],
-  posts: [],
-  products: []
-};
+import demoUsers from './demoData/demoUsers.json';
+import demoPosts from './demoData/demoPosts.json';
+import demoProducts from './demoData/demoProducts.json';
 
-export async function initDemo() {
-  if (!DEMO_MODE) return;
+// Engines
+import { loadUserEngine } from './engines/demoUserEngine.js';
+import { loadPostEngine } from './engines/postEngine.js';
+import { loadMarketplaceEngine } from './engines/marketplaceEngine.js';
+import { loadReelsEngine } from './engines/reelsEngine.js';
 
-  try {
-    const data = await loadDemoData();
-    DEMO_DATA.users = data.users;
-    DEMO_DATA.posts = data.posts;
-    DEMO_DATA.products = data.products;
+// Utilities
+import { formatCurrency } from './utils/currency.js';
 
-    console.log("✅ Demo mode active");
-    console.log("Users:", DEMO_DATA.users.length);
-    console.log("Posts:", DEMO_DATA.posts.length);
-    console.log("Products:", DEMO_DATA.products.length);
-  } catch (err) {
-    console.error("❌ Demo load failed", err);
-  }
+export function initDemo() {
+  console.log('Demo system initializing...');
+
+  // Load users
+  const users = loadUserEngine(demoUsers);
+  console.log('Users loaded:', users);
+
+  // Load posts
+  const posts = loadPostEngine(demoPosts);
+  console.log('Posts loaded:', posts);
+
+  // Load marketplace products
+  const products = loadMarketplaceEngine(
+    demoProducts.map(p => ({ ...p, price: formatCurrency(p.price, p.currency) }))
+  );
+  console.log('Products loaded:', products);
+
+  // Load reels
+  const reels = loadReelsEngine(demoPosts); // assuming reels use some posts
+  console.log('Reels loaded:', reels);
+
+  // Render basic demo content
+  const app = document.getElementById('app');
+  app.innerHTML = `
+    <h1>ChristoBuzz Demo</h1>
+    <p>Users: ${users.length}</p>
+    <p>Posts: ${posts.length}</p>
+    <p>Products: ${products.length}</p>
+    <p>Reels: ${reels.length}</p>
+  `;
 }
