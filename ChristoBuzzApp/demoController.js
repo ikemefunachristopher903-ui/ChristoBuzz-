@@ -1,47 +1,66 @@
-// demoController.js
-// This handles loading demo data for users, posts, products, and connecting features
+// -------------------- demoController.js --------------------
 
+// Import Supabase and ad loader
+import { supabase } from './supabase.js';
+import { loadAds } from './adnetwork.js';
+
+// Demo Data
 import demoUsers from './demoData/demoUsers.json';
 import demoPosts from './demoData/demoPosts.json';
 import demoProducts from './demoData/demoProducts.json';
 
-// Engines
-import { loadUserEngine } from './engines/demoUserEngine.js';
-import { loadPostEngine } from './engines/postEngine.js';
-import { loadMarketplaceEngine } from './engines/marketplaceEngine.js';
-import { loadReelsEngine } from './engines/reelsEngine.js';
+export const demoController = {
+  demoWallet: 0,
+  intervalId: null,
 
-// Utilities
-import { formatCurrency } from './utils/currency.js';
+  loadDemoAccount: function() {
+    console.log("Demo account loaded.");
+    // Start auto watching ads every X seconds
+    this.startAutoAds();
+  },
 
-export function initDemo() {
-  console.log('Demo system initializing...');
+  startAutoAds: function() {
+    if(this.intervalId) clearInterval(this.intervalId);
 
-  // Load users
-  const users = loadUserEngine(demoUsers);
-  console.log('Users loaded:', users);
+    // Auto-watch ads every 10 seconds for demo
+    this.intervalId = setInterval(() => {
+      this.watchDemoAd();
+    }, 10000); // 10 seconds
+  },
 
-  // Load posts
-  const posts = loadPostEngine(demoPosts);
-  console.log('Posts loaded:', posts);
+  watchDemoAd: function() {
+    console.log("Demo watching an ad...");
 
-  // Load marketplace products
-  const products = loadMarketplaceEngine(
-    demoProducts.map(p => ({ ...p, price: formatCurrency(p.price, p.currency) }))
-  );
-  console.log('Products loaded:', products);
+    // Call the ad network function to simulate a CPM ad watched
+    loadAds(document.getElementById('ads-container'), true);
 
-  // Load reels
-  const reels = loadReelsEngine(demoPosts); // assuming reels use some posts
-  console.log('Reels loaded:', reels);
+    // Add earnings for demo account
+    this.demoWallet += this.getAdRevenue();
+    this.updateWalletDisplay();
+  },
 
-  // Render basic demo content
-  const app = document.getElementById('app');
-  app.innerHTML = `
-    <h1>ChristoBuzz Demo</h1>
-    <p>Users: ${users.length}</p>
-    <p>Posts: ${posts.length}</p>
-    <p>Products: ${products.length}</p>
-    <p>Reels: ${reels.length}</p>
-  `;
+  getAdRevenue: function() {
+    // Example: random CPM between 0.05 - 0.2
+    return (Math.random() * 0.15 + 0.05).toFixed(2);
+  },
+
+  updateWalletDisplay: function() {
+    const walletView = document.getElementById('wallet-view');
+    if(walletView){
+      walletView.innerHTML = `<p>Wallet Balance: ${this.demoWallet} Demo USD</p>`;
+    }
+  }
+};
+
+// -------------------- Demo Data Access --------------------
+export function getDemoUsers() {
+  return demoUsers;
+}
+
+export function getDemoPosts() {
+  return demoPosts;
+}
+
+export function getDemoProducts() {
+  return demoProducts;
 }
