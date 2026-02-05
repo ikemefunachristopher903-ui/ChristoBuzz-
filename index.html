@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ChristoBuzz</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="manifest" href="manifest.json">
-  <link rel="icon" href="assets/icon/icon-192.svg">
+
+  <link rel="stylesheet" href="style.css" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="assets/icon/icon-192.svg" />
 </head>
 <body>
 
@@ -17,21 +18,25 @@
     <!-- LOGIN -->
     <div class="auth-box" id="login-box">
       <h2>Login</h2>
-      <input type="email" id="login-email" placeholder="Email">
-      <input type="password" id="login-password" placeholder="Password">
-      <button onclick="login()">Login</button>
-      <p>Don't have an account? <span onclick="toggleSignup()">Sign Up</span></p>
+      <input type="email" id="login-email" placeholder="Email" />
+      <input type="password" id="login-password" placeholder="Password" />
+      <button id="login-btn">Login</button>
+      <p>Don't have an account?
+        <span id="show-signup">Sign Up</span>
+      </p>
     </div>
 
     <!-- SIGNUP -->
     <div class="auth-box hidden" id="signup-box">
       <h2>Sign Up</h2>
-      <input type="text" id="signup-username" placeholder="Username">
-      <input type="email" id="signup-email" placeholder="Email">
-      <input type="password" id="signup-password" placeholder="Password">
-      <input type="password" id="signup-confirm-password" placeholder="Confirm Password">
-      <button onclick="signup()">Sign Up</button>
-      <p>Already have an account? <span onclick="toggleLogin()">Login</span></p>
+      <input type="text" id="signup-username" placeholder="Username" />
+      <input type="email" id="signup-email" placeholder="Email" />
+      <input type="password" id="signup-password" placeholder="Password" />
+      <input type="password" id="signup-confirm-password" placeholder="Confirm Password" />
+      <button id="signup-btn">Create Account</button>
+      <p>Already have an account?
+        <span id="show-login">Login</span>
+      </p>
     </div>
   </div>
 
@@ -51,8 +56,8 @@
       </ul>
     </nav>
 
-    <!-- TABS -->
-    <div id="tab-content">
+    <!-- CONTENT -->
+    <main id="tab-content">
       <div id="home" class="tab active"></div>
       <div id="reels" class="tab"></div>
       <div id="music" class="tab"></div>
@@ -60,15 +65,14 @@
       <div id="create" class="tab"></div>
       <div id="notifications" class="tab"></div>
       <div id="profile" class="tab"></div>
-    </div>
-
-    <!-- DEMO CONTENT LOADER -->
-    <script type="module" src="demoController.js"></script>
+    </main>
 
   </div>
 
   <!-- SCRIPTS -->
   <script type="module" src="supabase.js"></script>
+  <script type="module" src="demoController.js"></script>
   <script type="module" src="main.js"></script>
+
 </body>
 </html>
