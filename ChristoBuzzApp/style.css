@@ -1,0 +1,238 @@
+/* ========== RESET & BASE ========== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background-color: #f0f2f5;
+  color: #333;
+  min-height: 100vh;
+}
+
+/* ========== AUTH SCREENS ========== */
+.auth-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #6e8efb, #a777e3);
+  color: #fff;
+  text-align: center;
+}
+
+.auth-box {
+  background-color: rgba(255, 255, 255, 0.95);
+  color: #333;
+  padding: 20px 30px;
+  margin: 15px;
+  border-radius: 12px;
+  width: 280px;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+}
+
+.auth-box input {
+  display: block;
+  width: 100%;
+  margin: 10px 0;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.auth-box button {
+  width: 100%;
+  padding: 12px;
+  background-color: #6e8efb;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.auth-box button:hover {
+  background-color: #5a73d1;
+}
+
+.auth-box p {
+  margin-top: 10px;
+  font-size: 0.9rem;
+}
+
+.auth-box span {
+  color: #6e8efb;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+/* ========== HIDE ELEMENTS ========== */
+.hidden {
+  display: none !important;
+}
+
+/* ========== NAVIGATION BAR ========== */
+.navbar {
+  display: flex;
+  justify-content: center;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.navbar ul {
+  display: flex;
+  list-style: none;
+}
+
+.navbar li {
+  padding: 14px 20px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.2s;
+}
+
+.navbar li:hover,
+.navbar li.active {
+  color: #6e8efb;
+  border-bottom: 3px solid #6e8efb;
+}
+
+/* ========== TABS ========== */
+.tab {
+  display: none;
+  padding: 20px;
+}
+
+.tab.active {
+  display: block;
+}
+
+/* ========== FEED CARDS ========== */
+.feed-card, .market-card {
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 15px;
+  margin-bottom: 15px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.feed-card img, .market-card img {
+  width: 100%;
+  border-radius: 12px;
+}
+
+.feed-card h3, .market-card h3 {
+  margin: 10px 0 5px 0;
+  font-size: 1.1rem;
+  color: #222;
+}
+
+.feed-card p, .market-card p {
+  font-size: 0.9rem;
+  color: #555;
+}
+
+/* ========== BUTTONS ========== */
+button.primary {
+  background-color: #6e8efb;
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+button.primary:hover {
+  background-color: #5a73d1;
+}
+
+/* ========== PROFILE ========== */
+.profile-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.profile-header img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-right: 15px;
+  object-fit: cover;
+}
+
+.profile-header h2 {
+  font-size: 1.4rem;
+  margin-bottom: 5px;
+}
+
+.profile-header p {
+  font-size: 0.95rem;
+  color: #666;
+}
+
+/* ========== REELS & MUSIC ========== */
+.media-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* ========== MARKETPLACE ========== */
+.market-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 15px;
+}
+
+/* ========== NOTIFICATIONS ========== */
+.notification-item {
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+  font-size: 0.9rem;
+  color: #333;
+}
+
+/* ========== CREATE POST ========== */
+.create-post {
+  display: flex;
+  flex-direction: column;
+}
+
+.create-post textarea {
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  padding: 10px;
+  resize: none;
+  margin-bottom: 10px;
+}
+
+/* ========== DEMO CONTENT ========== */
+.demo-card {
+  background-color: #f5f6fa;
+  border-radius: 12px;
+  padding: 12px;
+  margin-bottom: 12px;
+  border: 1px dashed #ccc;
+}
+
+/* ========== RESPONSIVE ========== */
+@media screen and (max-width: 768px) {
+  .navbar ul {
+    flex-wrap: wrap;
+  }
+
+  .market-container {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  }
+}
