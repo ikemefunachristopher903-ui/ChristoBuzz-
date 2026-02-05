@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,50 +5,70 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ChristoBuzz</title>
   <link rel="stylesheet" href="style.css">
-  <script type="module" src="supabase.js"></script>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="assets/icon/icon-192.svg">
 </head>
 <body>
-  <!-- Splash Screen -->
-  <div id="splash">
-    <img src="assets/splash/splash.svg" alt="ChristoBuzz Splash" />
-  </div>
 
-  <!-- Auth UI -->
-  <div id="auth-container">
-    <h2>Sign In / Sign Up</h2>
-    <input type="email" id="email" placeholder="Email">
-    <input type="password" id="password" placeholder="Password">
-    <button id="signup-btn">Sign Up</button>
-    <button id="signin-btn">Sign In</button>
-    <button id="load-demo-btn">Load Demo Account</button>
-  </div>
+  <!-- AUTH SCREEN -->
+  <div id="auth-screen" class="auth-container">
+    <h1>Welcome to ChristoBuzz</h1>
 
-  <!-- Main App -->
-  <div id="app" style="display:none;">
-    <!-- Navigation -->
-    <nav id="nav">
-      <button data-view="feed">Feed</button>
-      <button data-view="reels">Reels</button>
-      <button data-view="marketplace">Marketplace</button>
-      <button data-view="wallet">Wallet</button>
-      <button data-view="profile">Profile</button>
-      <button data-view="notifications">Notifications</button>
-    </nav>
-
-    <!-- Views -->
-    <div id="views">
-      <div id="feed-view" class="view"></div>
-      <div id="reels-view" class="view"></div>
-      <div id="marketplace-view" class="view"></div>
-      <div id="wallet-view" class="view"></div>
-      <div id="profile-view" class="view"></div>
-      <div id="notifications-view" class="view"></div>
+    <!-- LOGIN -->
+    <div class="auth-box" id="login-box">
+      <h2>Login</h2>
+      <input type="email" id="login-email" placeholder="Email">
+      <input type="password" id="login-password" placeholder="Password">
+      <button onclick="login()">Login</button>
+      <p>Don't have an account? <span onclick="toggleSignup()">Sign Up</span></p>
     </div>
 
-    <!-- Ads -->
-    <div id="ads-container"></div>
+    <!-- SIGNUP -->
+    <div class="auth-box hidden" id="signup-box">
+      <h2>Sign Up</h2>
+      <input type="text" id="signup-username" placeholder="Username">
+      <input type="email" id="signup-email" placeholder="Email">
+      <input type="password" id="signup-password" placeholder="Password">
+      <input type="password" id="signup-confirm-password" placeholder="Confirm Password">
+      <button onclick="signup()">Sign Up</button>
+      <p>Already have an account? <span onclick="toggleLogin()">Login</span></p>
+    </div>
   </div>
 
+  <!-- MAIN APP -->
+  <div id="app" class="hidden">
+
+    <!-- NAVIGATION -->
+    <nav class="navbar">
+      <ul>
+        <li data-tab="home" class="active">Home</li>
+        <li data-tab="reels">Reels</li>
+        <li data-tab="music">Music</li>
+        <li data-tab="marketplace">Marketplace</li>
+        <li data-tab="create">Create</li>
+        <li data-tab="notifications">Notifications</li>
+        <li data-tab="profile">Profile</li>
+      </ul>
+    </nav>
+
+    <!-- TABS -->
+    <div id="tab-content">
+      <div id="home" class="tab active"></div>
+      <div id="reels" class="tab"></div>
+      <div id="music" class="tab"></div>
+      <div id="marketplace" class="tab"></div>
+      <div id="create" class="tab"></div>
+      <div id="notifications" class="tab"></div>
+      <div id="profile" class="tab"></div>
+    </div>
+
+    <!-- DEMO CONTENT LOADER -->
+    <script type="module" src="demoController.js"></script>
+
+  </div>
+
+  <!-- SCRIPTS -->
+  <script type="module" src="supabase.js"></script>
   <script type="module" src="main.js"></script>
 </body>
 </html>
