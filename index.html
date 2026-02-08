@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>ChristoBuzz</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="assets/icon/icon-192.svg" />
+</head>
+<body>
+
+  <!-- Auth Screen -->
+  <div id="auth-screen" class="auth-screen">
+    <div class="auth-container">
+      <h1>ChristoBuzz</h1>
+      <p>Join the mega social world</p>
+
+      <div class="auth-box" id="login-box">
+        <input type="email" id="login-email" placeholder="Email" required />
+        <input type="password" id="login-password" placeholder="Password" required />
+        <button onclick="login()">Log In</button>
+        <p>Don't have an account? <span onclick="toggleSignup()">Sign Up</span></p>
+      </div>
+
+      <div class="auth-box hidden" id="signup-box">
+        <input type="text" id="signup-username" placeholder="Username" required />
+        <input type="email" id="signup-email" placeholder="Email" required />
+        <input type="password" id="signup-password" placeholder="Password" required />
+        <input type="password" id="signup-confirm" placeholder="Confirm Password" required />
+        <button onclick="signup()">Sign Up</button>
+        <p>Already have an account? <span onclick="toggleLogin()">Log In</span></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main App -->
+  <div id="app" class="hidden">
+    <!-- Floating Action Button -->
+    <button id="fab" class="fab">+</button>
+
+    <!-- Feed -->
+    <div class="feed" id="feed">
+      <!-- Content loads here via feed.js -->
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+      <button data-tab="home" class="nav-btn active">🏠</button>
+      <button data-tab="reels" class="nav-btn">🎥</button>
+      <button data-tab="music" class="nav-btn">🎵</button>
+      <button data-tab="market" class="nav-btn">🛒</button>
+      <button data-tab="messages" class="nav-btn">💬<span class="badge hidden"></span></button>
+      <button data-tab="profile" class="nav-btn">👤</button>
+    </nav>
+
+    <!-- Messages Honeycomb Splash -->
+    <div id="msg-splash" class="msg-splash hidden">
+      <div class="honeycomb">
+        <div class="bee">B</div>
+        <div class="bee">B</div>
+      </div>
+      <div class="splash-content">
+        <h3>Messages Hive</h3>
+        <div id="friends-list"></div>
+        <button onclick="closeSplash()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="supabase.js"></script>
+  <script type="module" src="main.js" defer></script>
+  <script type="module" src="feed.js" defer></script>
+  <script type="module" src="music.js" defer></script>
+  <script type="module" src="messages.js" defer></script>
+  <script type="module" src="wallet.js" defer></script>
+  <script type="module" src="adnetwork.js" defer></script>
+  <script type="module" src="splitprocessor.js" defer></script>
+  <script type="module" src="marketplace.js" defer></script>
+  <script type="module" src="post.js" defer></script>
+  <script type="module" src="reels.js" defer></script>
+  <script type="module" src="config.js" defer></script>
+  <script type="module" src="state/appstate.js" defer></script>
+
+  <script>
+    function toggleSignup() {
+      document.getElementById('login-box').classList.add('hidden');
+      document.getElementById('signup-box').classList.remove('hidden');
+    }
+    function toggleLogin() {
+      document.getElementById('signup-box').classList.add('hidden');
+      document.getElementById('login-box').classList.remove('hidden');
+    }
+  </script>
+</body>
+</html>
